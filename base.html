@@ -1,0 +1,55 @@
+<!-- base.html - Master Framework Core Template -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDU-APS Secure Armoury Platform</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <link href="https://cloudflare.com" rel="stylesheet">
+    <style>
+        :root { --navy: #1a252f; --dark: #2c3e50; --crimson: #c0392b; --emerald: #27ae60; }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .bg-navy { background-color: var(--navy); color: white; }
+
+        .font-mono { font-family: monospace; font-size: 0.85rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-navy shadow-sm sticky-top mb-4">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand text-white fw-bold d-flex align-items-center" href="#">
+                <i class="fa-solid fa-shield-halved text-warning me-2 fs-4"></i>
+                <span>RDU-APS SECURE FIREARM LIFECYCLE & ORDNANCE SYSTEM</span>
+            </a>
+            {% if session.get('user_id') %}
+            <div class="d-flex align-items-center">
+                <div class="text-light me-3 small font-mono border-end pe-3 border-secondary">
+                    <i class="fa-solid fa-network-wired text-success me-1"></i> DB STATE: ACTIVE
+                </div>
+                <div class="text-light me-3">
+                    <i class="fa-solid fa-user-shield text-warning me-1"></i>
+                    Logged in: <strong class="text-warning">{{ session.get('full_name') }}</strong>
+                </div>
+                <a href="/logout" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-power-off me-1"></i> Exit</a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container-fluid px-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm mb-4" role="alert">
+                        <i class="fa-solid {% if category == 'success' %}fa-circle-check text-success{% else %}fa-triangle-exclamation text-danger{% endif %} me-2"></i>
+                        <span class="fw-medium">{{ message }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+    <script src="https://jsdelivr.net"></script>
+</body>
+</html>
